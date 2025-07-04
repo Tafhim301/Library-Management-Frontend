@@ -1,30 +1,44 @@
-import type { IBooks} from "@/types";
+import type { IBooks } from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
+  tagTypes: ["Book"],
   endpoints: (builder) => ({
     getBooks: builder.query<IBooks[], void>({
       query: () => "/books",
       transformResponse: (response: { data: IBooks[] }) => response.data,
+      providesTags: ["Book"],
     }),
     getBook: builder.query({
       query: (bookId) => `/books/${bookId}`,
-     
     }),
     getBorrowSummary: builder.query({
       query: () => "/borrow",
-   
     }),
-    updateBook : builder.mutation({
+    updateBook: builder.mutation({
       query: ({ id, payload }) => ({
-      url: `/books/${id}`,
-      method: "PUT",
-      body: payload,
+        url: `/books/${id}`,
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["Book"],
     }),
-
-    })
+    deleteBook: builder.mutation({
+      query: (id) => ({
+        url: `/books/${id}`,
+        method: "DELETE",
+     
+      }),
+      invalidatesTags: ["Book"],
+    }),
   }),
 });
-export const { useGetBooksQuery,useGetBorrowSummaryQuery,useGetBookQuery ,useUpdateBookMutation} = baseApi;
+export const {
+  useGetBooksQuery,
+  useGetBorrowSummaryQuery,
+  useGetBookQuery,
+  useUpdateBookMutation,
+  useDeleteBookMutation
+} = baseApi;
