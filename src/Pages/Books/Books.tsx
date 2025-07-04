@@ -5,14 +5,16 @@ import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import type { IBooks } from "@/types";
 import { ClipLoader } from "react-spinners";
-import { BookCheck, BookOpen, PencilLine, Trash2 } from "lucide-react";
+import { BookCheck, BookOpen, Filter, PencilLine, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
-
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+const genres = ["FICTION", "NON_FICTION", "SCIENCE", "HISTORY", "BIOGRAPHY", "FANTASY"];
 export default function Books() {
   const [page, setPage] = useState(1);
-  const limit = 10; 
+  const [filter, setFilter] = useState("");
+  const limit = 10;
 
-  const { data, isLoading, isError,isFetching } = useGetBooksQuery({ page, limit });
+  const { data, isLoading, isError, isFetching } = useGetBooksQuery({ page, limit, filter });
   const [deleteBook] = useDeleteBookMutation();
   const navigate = useNavigate();
 
@@ -62,7 +64,24 @@ export default function Books() {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">All Books</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold mb-4">All Books</h2>
+        <div className="mb-6 min-4/5">
+          <Select onValueChange={(value) => setFilter(value)} value={filter}>
+            <SelectTrigger className="min-w-4/5">
+             <Filter></Filter><SelectValue placeholder="Filter by Genre" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All">All Genres</SelectItem>
+              {genres.map((genre) => (
+                <SelectItem key={genre} value={genre}>
+                  {genre}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -92,7 +111,7 @@ export default function Books() {
               </TableCell>
               <TableCell className="flex flex-wrap gap-2">
                 <Link to={`/books/${book?._id}`}>
-                  <Button size="sm" variant="outline"><BookOpen /> See</Button>
+                  <Button size="sm" variant="outline"><BookOpen />See Details</Button>
                 </Link>
                 <Link to={`/edit-book/${book?._id}`}>
                   <Button size="sm" variant="outline"><PencilLine /> Edit</Button>
@@ -109,7 +128,7 @@ export default function Books() {
         </TableBody>
       </Table>
 
-   
+
       <div className="flex justify-center items-center mt-6 gap-4">
         <Button
           variant="outline"

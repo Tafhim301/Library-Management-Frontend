@@ -10,17 +10,19 @@ export const baseApi = createApi({
       {
         data: IBooks[];
         meta: {
+          filter : string
           total: number;
           page: number;
           limit: number;
           totalPages: number;
         };
       },
-      { page?: number; limit?: number } | void
+      { page?: number; limit?: number; filter?: string } | void
     >({
       query: (params) => {
         const queryString = params
           ? `?${new URLSearchParams({
+            filter : (params.filter || ""),
               page: String(params.page || 1),
               limit: String(params.limit || 10),
             })}`
