@@ -1,7 +1,7 @@
-import {  useDeleteBookMutation, useGetBooksQuery } from "@/redux/api/baseApi";
+import { useDeleteBookMutation, useGetBooksQuery } from "@/redux/api/baseApi";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import type { IBooks } from "@/types";
 import { ClipLoader } from "react-spinners";
 import { BookCheck, PencilLine, Trash2 } from "lucide-react";
@@ -9,52 +9,61 @@ import toast from "react-hot-toast";
 
 export default function Books() {
   const [deleteBook] = useDeleteBookMutation();
-  const handleDelete =async (bookId : string) =>{
+  const navigate = useNavigate();
+
+  const handleBorrow = (book: IBooks) => {
+    if (book.copies > 0) {
+      navigate(`/borrow/${book._id}`);
+    } else {
+      toast.error(`"${book.title}" is not available for borrowing.`);
+    }
+  };
+
+  const handleDelete = async (book: IBooks) => {
     toast.custom((t) => (
-    <div className="bg-white p-4 rounded shadow-md border flex flex-col gap-2 max-w-xs">
-      <span className="font-medium text-sm">Are you sure you want to delete?</span>
-      <div className="flex justify-end gap-2">
-        <button
-          onClick={() => toast.dismiss(t.id)}
-          className="text-sm px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={async() => {
-            try {
-              await deleteBook(bookId).unwrap()
+      <div className="bg-white p-4 rounded shadow-md border flex flex-col gap-2 max-w-xs">
+        <span className="font-medium text-sm">Are you sure you want to delete?</span>
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="text-sm px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={async () => {
+             
+              try {
+                await deleteBook(book._id).unwrap()
+                await toast.success(`"${book.title}" Has Been Deleted Successfully`);
+                toast.dismiss(t.id);
+
+
+              } catch (error) {
+                toast.error(`Failed To Delete Book`);
+
+                console.log(error)
+
+
+              }
+
+
               toast.dismiss(t.id);
-              toast.success("Book Has Been Deleted Successfully");
 
-            
-           } catch (error) {
-            toast.error(`Sorry! An error has occured.`
-
-            );
-
-            console.log(error)
-
-            
-           }
-            
-           
-            toast.dismiss(t.id);
-           
-          }}
-          className="text-sm px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-        >
-          Confirm
-        </button>
+            }}
+            className="text-sm px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            Confirm
+          </button>
+        </div>
       </div>
-    </div>
-  ));
-    
+    ));
+
   }
 
   const { data: books, isLoading, isError } = useGetBooksQuery();
 
-  if (isLoading) return <p><ClipLoader></ClipLoader></p>;
+  if (isLoading) return <p className="text-center"><ClipLoader></ClipLoader></p>;
   if (isError) return <p className="text-center font-bold text-red-600 text-3xl">Error loading books.</p>;
 
   return (
@@ -89,10 +98,11 @@ export default function Books() {
                 <Link to={`/edit-book/${book?._id}`}>
                   <Button size="sm" variant="outline"><PencilLine></PencilLine>Edit</Button>
                 </Link>
-                <Link to={`/borrow/${book?._id}`}>
-                  <Button size="sm" variant="secondary"><BookCheck></BookCheck> Borrow</Button>
-                </Link>
-                <Button onClick={() => handleDelete(`${book?._id}`)} size="sm" variant="destructive"><Trash2></Trash2>Delete</Button>
+                <Button onClick={() => handleBorrow(book)} size="sm" variant="secondary">
+                  <BookCheck /> Borrow
+                </Button>
+
+                <Button onClick={() => handleDelete(book)} size="sm" variant="destructive"><Trash2></Trash2>Delete</Button>
               </TableCell>
             </TableRow>
           ))}
