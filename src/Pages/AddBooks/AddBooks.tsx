@@ -11,7 +11,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 
-const genres = ["FICTION", "NON_FUNCTION", "SCIENCE", "HISTORY", "BIOGRAPHY", "FANTASY"] as const;
+const genres = ["FICTION", "NON_FICTION", "SCIENCE", "HISTORY", "BIOGRAPHY", "FANTASY"] as const;
 
 const bookSchema = z.object({
   title: z.string().min(1, "Title is required"),
