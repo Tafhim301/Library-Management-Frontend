@@ -10,7 +10,14 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BookKey, BookOpen,  CircleArrowLeft,  Info, NotebookPen, PencilLine, } from "lucide-react";
+import {
+  BookKey,
+  BookOpen,
+  CircleArrowLeft,
+  Info,
+  NotebookPen,
+  PencilLine,
+} from "lucide-react";
 
 export default function SingleBook() {
   const { bookId } = useParams();
@@ -25,7 +32,7 @@ export default function SingleBook() {
 
   if (isError || !data?.data)
     return (
-      <p className="text-center text-3xl text-red-600 font-bold py-10">
+      <p className="text-center text-3xl text-red-600 font-bold py-10 dark:text-red-400">
         Book Not Found
       </p>
     );
@@ -35,12 +42,12 @@ export default function SingleBook() {
   return (
     <div className="max-w-3xl mx-auto py-10 px-4">
       <Card className="shadow-xl rounded-2xl">
-        <CardHeader className="border-b pb-4">
+        <CardHeader className="border-b pb-4 dark:border-gray-700">
           <CardTitle className="text-xl font-bold flex items-center gap-2">
-            <BookOpen className="w-6 h-6 text-indigo-600" />
+            <BookOpen className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
             {book.title}
           </CardTitle>
-          <CardDescription className="flex items-center font-bold gap-2 text-sm text-gray-500 mt-1">
+          <CardDescription className="flex items-center font-bold gap-2 text-sm mt-1 text-gray-600 dark:text-gray-300">
             <NotebookPen className="w-4 h-4" />
             {book.author}
           </CardDescription>
@@ -50,14 +57,18 @@ export default function SingleBook() {
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div className="space-y-2">
               <p>
-                <span className="font-medium">ISBN:</span> <span className="font-semibold text-xs rounded bg-gray-100 p-1">{book.isbn}</span>
+                <span className="font-medium">ISBN:</span>{" "}
+                <span className="font-semibold text-xs rounded bg-gray-100 dark:bg-gray-800 p-1">
+                  {book.isbn}
+                </span>
               </p>
               <p>
                 <span className="font-medium">Genre:</span>{" "}
                 <Badge variant="outline">{book.genre}</Badge>
               </p>
               <p>
-                <span className="font-medium">Copies:</span> <span className="font-bold">{book.copies}</span>
+                <span className="font-medium">Copies:</span>{" "}
+                <span className="font-bold">{book.copies}</span>
               </p>
             </div>
 
@@ -70,7 +81,7 @@ export default function SingleBook() {
               </p>
               <p>
                 <span className="font-medium">Book ID:</span>{" "}
-                <code className="text-xs font-semibold bg-gray-100 rounded p-1">
+                <code className="text-xs font-semibold bg-gray-100 dark:bg-gray-800 rounded p-1">
                   {book._id}
                 </code>
               </p>
@@ -81,20 +92,29 @@ export default function SingleBook() {
             <h3 className="text-lg font-semibold mb-1 flex items-center gap-2">
               <Info className="w-4 h-4" /> Description:
             </h3>
-            <p className="text-gray-700 text-sm font-semibold  leading-relaxed">
+            <p className="text-gray-700 dark:text-gray-300 text-sm font-semibold leading-relaxed">
               {book.description || "No description provided."}
             </p>
           </div>
 
-          <div className="mt-6 flex gap-4 justify-start border-t pt-4">
-           <Button asChild variant="default">
-              <Link to={`/borrow/${book._id}`}> <BookKey/>Borrow Book</Link>
+          <div className="mt-6 flex gap-4 justify-start border-t pt-4 dark:border-gray-700">
+            <Button asChild variant="default">
+              <Link to={`/borrow/${book._id}`}>
+                <BookKey className="mr-2 w-4 h-4" />
+                Borrow Book
+              </Link>
             </Button>
             <Button asChild variant="secondary">
-              <Link to={`/edit-book/${book._id}`}><PencilLine></PencilLine>Edit Book</Link>
+              <Link to={`/edit-book/${book._id}`}>
+                <PencilLine className="mr-2 w-4 h-4" />
+                Edit Book
+              </Link>
             </Button>
             <Button asChild variant="outline">
-              <Link to="/books"><CircleArrowLeft/>Back to List</Link>
+              <Link to="/books">
+                <CircleArrowLeft className="mr-2 w-4 h-4" />
+                Back to List
+              </Link>
             </Button>
           </div>
         </CardContent>

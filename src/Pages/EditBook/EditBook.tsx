@@ -16,12 +16,15 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
-import { useGetBookQuery, useUpdateBookMutation } from "@/redux/api/baseApi";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-
-
+import { useGetBookQuery, useUpdateBookMutation } from "@/redux/api/baseApi";
 
 const bookSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -93,25 +96,31 @@ export default function EditBook() {
 
   if (isError)
     return (
-      <p className="text-center mt-10 text-red-600 font-semibold text-lg">
+      <p className="text-center mt-10 text-red-600 dark:text-red-400 font-semibold text-lg">
         Failed to load book.
       </p>
     );
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white rounded-2xl shadow">
-      <h2 className="text-2xl font-semibold mb-4">Edit Book</h2>
+    <div className="max-w-xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-2xl shadow">
+      <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
+        Edit Book
+      </h2>
 
-      <Form{...form}>
+      <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Title</FormLabel>
+                <FormLabel className="dark:text-gray-200">Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter book title" {...field} />
+                  <Input
+                    placeholder="Enter book title"
+                    {...field}
+                    className="dark:bg-gray-800 dark:text-white"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -123,9 +132,13 @@ export default function EditBook() {
             name="author"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Author</FormLabel>
+                <FormLabel className="dark:text-gray-200">Author</FormLabel>
                 <FormControl>
-                  <Input placeholder="Author name" {...field} />
+                  <Input
+                    placeholder="Author name"
+                    {...field}
+                    className="dark:bg-gray-800 dark:text-white"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -137,13 +150,10 @@ export default function EditBook() {
             name="genre"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Genre</FormLabel>
+                <FormLabel className="dark:text-gray-200">Genre</FormLabel>
                 <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
-                    <SelectTrigger>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="dark:bg-gray-800 dark:text-white">
                       <SelectValue placeholder="Select a genre" />
                     </SelectTrigger>
                     <SelectContent>
@@ -166,9 +176,13 @@ export default function EditBook() {
             name="isbn"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>ISBN</FormLabel>
+                <FormLabel className="dark:text-gray-200">ISBN</FormLabel>
                 <FormControl>
-                  <Input placeholder="ISBN number" {...field} />
+                  <Input
+                    placeholder="ISBN number"
+                    {...field}
+                    className="dark:bg-gray-800 dark:text-white"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -180,9 +194,13 @@ export default function EditBook() {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description</FormLabel>
+                <FormLabel className="dark:text-gray-200">Description</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Short description" {...field} />
+                  <Textarea
+                    placeholder="Short description"
+                    {...field}
+                    className="dark:bg-gray-800 dark:text-white"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -194,9 +212,14 @@ export default function EditBook() {
             name="copies"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Copies</FormLabel>
+                <FormLabel className="dark:text-gray-200">Copies</FormLabel>
                 <FormControl>
-                  <Input type="number" min={0} {...field} />
+                  <Input
+                    type="number"
+                    min={0}
+                    {...field}
+                    className="dark:bg-gray-800 dark:text-white"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -204,7 +227,6 @@ export default function EditBook() {
           />
 
           <Button
-            
             type="submit"
             className="w-full"
             disabled={form.formState.isSubmitting}
