@@ -3,6 +3,7 @@
 import { Link } from "react-router";
 import { Separator } from "@/components/ui/separator";
 import { Facebook, Twitter, Github, Mail } from "lucide-react";
+import { Logo } from "@/components/Logo/Logo";
 
 export default function Footer() {
   return (
@@ -12,7 +13,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-sm text-muted-foreground">
        
           <div>
-            <h2 className="text-lg font-bold text-primary">MiniLibrary</h2>
+            <h2 className="text-lg font-bold text-primary"><Logo/></h2>
             <p className="mt-2 text-xs text-muted-foreground">
               A minimalist library management system built with React & ShadCN.
             </p>
@@ -89,7 +90,7 @@ export default function Footer() {
 
         <Separator className="my-6" />
 
-        {/* Bottom Section */}
+      
         <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} LibraryApp. All rights reserved.</p>
           <p>

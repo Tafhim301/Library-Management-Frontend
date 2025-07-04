@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { BookOpen, PlusSquare, ListOrdered, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { useState } from "react";
-import { ModeToggle } from "@/components/Logo/mode-toggler";
+import { ModeToggle } from "@/components/mode-toggler";
 
 const navItems = [
     { name: "All Books", path: "/books", icon: BookOpen },

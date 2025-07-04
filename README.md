@@ -1,11 +1,7 @@
-# 📚 miniLibrary Frontend
+# 📚 MiniLibrary Frontend
 
 A minimalist React + TypeScript + Redux + Tailwind-based frontend project for managing books and borrow records.
 
-> Developed by [@tafhim301](https://github.com/tafhim301)  
-> Repo: [Tafhim301/Library-Management-Frontend](https://github.com/Tafhim301/Library-Management-Frontend)
-
----
 
 ## 🌟 Features
 
@@ -42,11 +38,12 @@ A minimalist React + TypeScript + Redux + Tailwind-based frontend project for ma
 - Genre filter (FICTION, SCIENCE, FANTASY, etc.)
 - Loading spinner
 - Minimal book cards
+- Pagination
 
 ---
 
 ### 📕 Borrow Summary  
-`/summary`
+`/borrow-summary`
 
 - Lists borrowed books
 - Aggregated total quantity
@@ -55,7 +52,7 @@ A minimalist React + TypeScript + Redux + Tailwind-based frontend project for ma
 ---
 
 ### ➕ Add Book  
-`/add-books` *(Optional future feature)*
+`/add-book`
 
 - Form for adding new books
 - Validation for inputs
@@ -105,6 +102,11 @@ npm install
 npm run dev
 ```
 
+
+**Backend Repo**
+Check This Out for Backend Support:
+**https://github.com/Tafhim301/Library_Management_Backend**
+
 > ⚠️ Make sure your backend server is running before launching the frontend.
 
 ---
@@ -112,7 +114,8 @@ npm run dev
 ## 🌐 Live App
 
 Frontend URL:  
-**https://miniLibrary-frontend.vercel.app** *(replace with actual link)*
+**https://library-management-frontend-alpha.vercel.app/**
+
 
 Try routes like:  
 `/books`, `/summary`
@@ -152,4 +155,3 @@ GitHub: [@tafhim301](https://github.com/tafhim301)
 
 ---
 
-> Clean Code. Minimal Design. Functional Stack.
