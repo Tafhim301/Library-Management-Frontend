@@ -17,7 +17,7 @@ const bookSchema = z.object({
   title: z.string().min(1, "Title is required"),
   author: z.string().min(1, "Author is required"),
   genre: z.enum(genres),
-  isbn: z.string().min(10, "ISBN must be at least 10 characters"),
+  isbn: z.string().min(5, "ISBN must be at least 10 characters"),
   description: z.string().min(1, "Description is required"),
   copies: z.number().min(1, "Must have at least 1 copy"),
 });
@@ -43,13 +43,18 @@ export default function AddBookForm() {
   const onSubmit = async (values: BookFormData) => {
     try {
       await addBook({
-        ...values,
-        available: values.copies > 0,
+        payload: {
+
+          ...values,
+          available: values.copies > 0,
+        }
       }).unwrap();
       toast.success("Book added successfully!");
       navigate("/books");
-    } catch (err) {
-      toast.error("Failed to add book");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      toast.error(`Failed to add book. 
+        Error: ${err.data.message} `);
       console.error(err);
     }
   };
