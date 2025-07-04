@@ -105,7 +105,7 @@ export default function Books() {
               <TableCell className="font-bold text-xs">{book.isbn}</TableCell>
               <TableCell className="font-bold text-xs">{book.copies}</TableCell>
               <TableCell>
-                <span className={`text-sm font-semibold px-2 py-1 rounded ${book.available ? "bg-green-200" : "bg-red-200"}`}>
+                <span className={`text-sm font-semibold px-2 py-1 rounded ${book.available ? "bg-green-200 dark:bg-green-400" : "bg-red-200 dark:bg-red-400"}`}>
                   {book.available ? "Yes" : "No"}
                 </span>
               </TableCell>

@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-sm text-muted-foreground">
        
           <div>
-            <h2 className="text-lg font-bold text-primary">LibraryApp</h2>
+            <h2 className="text-lg font-bold text-primary">MiniLibrary</h2>
             <p className="mt-2 text-xs text-muted-foreground">
               A minimalist library management system built with React & ShadCN.
             </p>
@@ -32,7 +32,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Navigation */}
+       
           <div>
             <h3 className="text-sm font-semibold mb-2 text-foreground">Navigation</h3>
             <ul className="space-y-2">
