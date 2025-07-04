@@ -5,12 +5,14 @@ import SingleBook from "@/Pages/Books/SingleBook";
 import BorrowBook from "@/Pages/BorrowBook/BorrowBook";
 import BorrowSummary from "@/Pages/BorrowSummary/BorrowSummary";
 import EditBook from "@/Pages/EditBook/EditBook";
+import ErrorPage from "@/Pages/ErrorPage/ErrorPage";
 import { createBrowserRouter, Navigate } from "react-router";
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             {
                 index: true, 
