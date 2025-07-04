@@ -1,7 +1,13 @@
 import { Outlet } from "react-router"
 import Navbar from "./Layout/Navbar/Navbar"
+import Footer from "./Layout/Footer/Footer"
+
+
 
 function App() {
+
+
+
 
 
   return (
@@ -9,9 +15,11 @@ function App() {
       <div>
         <Navbar></Navbar>
       </div>
+
       <main className="p-4" >
         <Outlet></Outlet>
       </main>
+      <Footer></Footer>
     </>
 
   )

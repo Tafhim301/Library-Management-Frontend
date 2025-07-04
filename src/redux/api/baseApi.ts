@@ -4,13 +4,34 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
-  tagTypes: ["Book","Borrow"],
+  tagTypes: ["Book", "Borrow"],
   endpoints: (builder) => ({
-    getBooks: builder.query<IBooks[], void>({
-      query: () => "/books",
-      transformResponse: (response: { data: IBooks[] }) => response.data,
+    getBooks: builder.query<
+      {
+        data: IBooks[];
+        meta: {
+          total: number;
+          page: number;
+          limit: number;
+          totalPages: number;
+        };
+      },
+      { page?: number; limit?: number } | void
+    >({
+      query: (params) => {
+        const queryString = params
+          ? `?${new URLSearchParams({
+              page: String(params.page || 1),
+              limit: String(params.limit || 10),
+            })}`
+          : "";
+        return `/books${queryString}`;
+      },
+    
       providesTags: ["Book"],
+    
     }),
+
     getBook: builder.query({
       query: (bookId) => `/books/${bookId}`,
     }),
@@ -18,23 +39,21 @@ export const baseApi = createApi({
       query: () => "/borrow",
       providesTags: ["Borrow"],
     }),
-    borrowBook : builder.mutation({
-       query: ({payload }) => ({
+    borrowBook: builder.mutation({
+      query: ({ payload }) => ({
         url: `/borrow`,
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["Borrow","Book"]
-
+      invalidatesTags: ["Borrow", "Book"],
     }),
-    addBook : builder.mutation({
-       query: ({payload }) => ({
+    addBook: builder.mutation({
+      query: ({ payload }) => ({
         url: `/books`,
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["Book"]
-
+      invalidatesTags: ["Book"],
     }),
     updateBook: builder.mutation({
       query: ({ id, payload }) => ({
@@ -48,7 +67,6 @@ export const baseApi = createApi({
       query: (id) => ({
         url: `/books/${id}`,
         method: "DELETE",
-     
       }),
       invalidatesTags: ["Book"],
     }),
@@ -61,5 +79,5 @@ export const {
   useUpdateBookMutation,
   useDeleteBookMutation,
   useBorrowBookMutation,
-  useAddBookMutation
+  useAddBookMutation,
 } = baseApi;

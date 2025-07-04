@@ -20,8 +20,8 @@ export default function Navbar() {
 
     return (
         <nav className="w-full bg-white dark:bg-gray-950 shadow-sm px-4 py-3 border-b">
-            <div className="max-w-7xl mx-auto flex items-center justify-between">
-                {/* Logo */}
+            <div className=" mx-auto flex items-center justify-between">
+           
                 <Link to="/" className="text-xl font-semibold text-primary hover:opacity-80 " onClick={handleNavLinkClick}>
                     <Logo />
                 </Link>

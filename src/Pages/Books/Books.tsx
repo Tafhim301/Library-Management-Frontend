@@ -2,12 +2,17 @@ import { useDeleteBookMutation, useGetBooksQuery } from "@/redux/api/baseApi";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router";
+import { useState } from "react";
 import type { IBooks } from "@/types";
 import { ClipLoader } from "react-spinners";
-import { BookCheck, PencilLine, Trash2 } from "lucide-react";
+import { BookCheck, BookOpen, PencilLine, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function Books() {
+  const [page, setPage] = useState(1);
+  const limit = 10; 
+
+  const { data, isLoading, isError,isFetching } = useGetBooksQuery({ page, limit });
   const [deleteBook] = useDeleteBookMutation();
   const navigate = useNavigate();
 
@@ -32,24 +37,14 @@ export default function Books() {
           </button>
           <button
             onClick={async () => {
-             
               try {
-                await deleteBook(book._id).unwrap()
-                await toast.success(`"${book.title}" Has Been Deleted Successfully`);
-                toast.dismiss(t.id);
-
-
+                await deleteBook(book._id).unwrap();
+                toast.success(`"${book.title}" Has Been Deleted Successfully`);
               } catch (error) {
                 toast.error(`Failed To Delete Book`);
-
-                console.log(error)
-
-
+                console.log(error);
               }
-
-
               toast.dismiss(t.id);
-
             }}
             className="text-sm px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
           >
@@ -58,13 +53,12 @@ export default function Books() {
         </div>
       </div>
     ));
+  };
 
-  }
+  if (isLoading || isFetching) return <p className="text-center"><ClipLoader /></p>;
+  if (isError || !data) return <p className="text-center text-red-600 text-lg">Failed to load books.</p>;
 
-  const { data: books, isLoading, isError } = useGetBooksQuery();
-
-  if (isLoading) return <p className="text-center"><ClipLoader></ClipLoader></p>;
-  if (isError) return <p className="text-center font-bold text-red-600 text-3xl">Error loading books.</p>;
+  const { data: books, meta } = data;
 
   return (
     <div className="p-6">
@@ -82,11 +76,13 @@ export default function Books() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {books?.map((book: IBooks, index: number) => (
+          {books.map((book: IBooks, index: number) => (
             <TableRow key={index}>
               <TableCell className="font-bold">{book.title}</TableCell>
               <TableCell className="text-xs font-bold">{book.author}</TableCell>
-              <TableCell className="font-bold"><Button variant={"outline"} size={'sm'}>{book.genre}</Button></TableCell>
+              <TableCell className="font-bold">
+                <Button className="w-32" variant={"outline"}>{book.genre}</Button>
+              </TableCell>
               <TableCell className="font-bold text-xs">{book.isbn}</TableCell>
               <TableCell className="font-bold text-xs">{book.copies}</TableCell>
               <TableCell>
@@ -94,20 +90,47 @@ export default function Books() {
                   {book.available ? "Yes" : "No"}
                 </span>
               </TableCell>
-              <TableCell className="flex justify-center gap-2">
+              <TableCell className="flex flex-wrap gap-2">
+                <Link to={`/books/${book?._id}`}>
+                  <Button size="sm" variant="outline"><BookOpen /> See</Button>
+                </Link>
                 <Link to={`/edit-book/${book?._id}`}>
-                  <Button size="sm" variant="outline"><PencilLine></PencilLine>Edit</Button>
+                  <Button size="sm" variant="outline"><PencilLine /> Edit</Button>
                 </Link>
                 <Button onClick={() => handleBorrow(book)} size="sm" variant="secondary">
                   <BookCheck /> Borrow
                 </Button>
-
-                <Button onClick={() => handleDelete(book)} size="sm" variant="destructive"><Trash2></Trash2>Delete</Button>
+                <Button onClick={() => handleDelete(book)} size="sm" variant="destructive">
+                  <Trash2 /> Delete
+                </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
+   
+      <div className="flex justify-center items-center mt-6 gap-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+          disabled={page === 1}
+        >
+          Previous
+        </Button>
+        <span className="text-sm font-medium">
+          Page {meta.page} of {meta.totalPages}
+        </span>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setPage((prev) => Math.min(meta.totalPages, prev + 1))}
+          disabled={page === meta.totalPages}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 }

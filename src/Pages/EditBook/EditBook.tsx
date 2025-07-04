@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 
 import { useGetBookQuery, useUpdateBookMutation } from "@/redux/api/baseApi";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 
 
@@ -181,7 +182,7 @@ export default function EditBook() {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="Short description" {...field} />
+                  <Textarea placeholder="Short description" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
